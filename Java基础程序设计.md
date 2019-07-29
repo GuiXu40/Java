@@ -60,7 +60,74 @@ public class Main {
 整形最大值+2:-2147483647
 ```
 这种情况就像计数器的内容达最大值时会自动清零,所以当最大数+1时,就变成最小值了,这就是产生了**溢出**.
+<br>
+为了解决int类型的溢出,可以再表达式的任一常亮中加上大写的"L",或者在变量前面加上long(强制类型转换)
+```java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        int max=Integer.MAX_VALUE;
+        System.out.println("整形最大值:"+max);
+        System.out.println("整形最大值+1:"+(max+1));
+        System.out.println("整形最大值+2:"+(max+2L));
+        System.out.println("整形最大值+2:"+((long)max+2));
+    }
+}
+//运行结果
+整形最大值:2147483647
+整形最大值+1:-2147483648
+整形最大值+2:2147483649
+整形最大值+2:2147483649
+```
+**说明**: Integer在Java中属于包装类
 #### :copyright:字符类型
+其实字符类型是特殊的整数.Unicode编码为每个字符制定了一个唯一的数值.<br>
+例:测试字符与整数之间的转换
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        char ch1='a';   //定义字符
+        char ch2=97;    //定义字符,整形转字符
+        System.out.println("ch1="+ch1);
+        System.out.println("ch2="+ch2);
+    }
+}
+//运行结果
+ch1=a
+ch2=a
+```
+字符要用一对单引号('')括起来
+<br>
+如果想输出特殊的字符,就必须转义,常见的转义字符
+
+转义字符|描述
+---|:--:
+\f|换页
+\\|反斜线
+\b|倒退一格
+\'|单引号
+\r|归位
+\"|双引号
+\t|制表符Tab
+\n|换行
+例:转义字符的运用
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        char ch1='\"';
+        char ch2='\\';
+        System.out.println("ch1="+ch1);
+        System.out.println("ch2="+ch2);
+        System.out.println("\"hello,world\"");
+    }
+}
+//////
+ch1="
+ch2=\
+"hello,world"
+```
 #### :copyright:浮点数类型和双精度浮点数类型
 #### :copyright:布尔类型
 #### :copyright:基本数据类型的默认值

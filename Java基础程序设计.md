@@ -111,6 +111,7 @@ ch2=a
 \"|双引号
 \t|制表符Tab
 \n|换行
+
 例:转义字符的运用
 ```Java
 public class Main {
@@ -129,6 +130,10 @@ ch2=\
 "hello,world"
 ```
 #### :copyright:浮点数类型和双精度浮点数类型
+```Java
+double num ;    //声明num为双精度浮点型变量
+float num=3.0F;   //声明num为浮点型变量,其初值为3.0
+```
 #### :copyright:布尔类型
 #### :copyright:基本数据类型的默认值
 <p id="p3"></p>

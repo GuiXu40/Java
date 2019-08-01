@@ -134,20 +134,111 @@ ch2=\
 double num ;    //声明num为双精度浮点型变量
 float num=3.0F;   //声明num为浮点型变量,其初值为3.0
 ```
+需要注意的是,使用浮点数时,默认的类型是double,在数值后面可加上D或是d.在数据后面加上F或f,则作为float类型的标识.<br>
+浮点数计算:
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        float num=0.3f;
+        System.out.println("两个数向乘："+num*num);
+    }
+}
+
+//0.9
+```
 #### :copyright:布尔类型
+布尔类型只有true和false,没有其他的值可以赋值给这个变量<br>语法:
+```Java
+boolean flag=true; 
+```
+通常用于控制程序的流程
 #### :copyright:基本数据类型的默认值
+若没有给变量赋值,则会给变量赋默认值
+
+数据类型|默认值
+---|:--:
+byte|0
+short|0
+int|0
+long|0L
+float|0.0f
+double|0.0d
+char|\u0000
+boolean|false
 <p id="p3"></p>
 
 ## :hearts:数据类型的转换
 <a href="#title">:spades:回到目录</a><br>
+自动类型转换和强制类型转换
 #### :copyright:数据类型的自动转换
+转换条件:<br>
++ 转换前的数据类型与转换后的数据类型兼容
++ 转换后的数据类型表示范围比转换前的大(扩大转换)<br>
+比如说int与float做计算时,int会被转换成float<br>
+**注意**: 任何数据类型碰到String类型的数据或常量之后都向String转换
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        String str="guixu";
+        int x=60;
+        str=str+x;
+        System.out.println("str+"+str);
+    }
+}
+```
 #### :copyright:数据类型的强制转换
+强制类型转换的语法:
+```Java
+(欲转换的数据类型)变量名称-->显示转换
+```
+例子:数据类型的强制转换
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        float a=30.3f;
+        int x=(int)a;
+        System.out.println("x:"+x);
+        System.out.println("10/3="+((float)10/3));
+    }
+}
+//x:30
+//10/3=3.3333333
+```
 <p id="p4"></p>
 
 ## :hearts:运算符,表达式和语句
 <a href="#title">:spades:回到目录</a><br>
 #### :copyright:运算符
+
+运算符|描述
+---|:--:
+=|赋值
++|正号/加法
+-|负号/减法
+* |乘法
+>|大于
+<|小于
+++ |自增
+-- |自减
+&|AND,与
+&&|短路与
+'|' |OR,或
+'||' |短路或
+()|提高括号表达式的优先级
+<br>
+
 #### :copyright:简洁表达式
+
+运算符|范例用法|说明|描述
+---|:--:|:--:|:--:
++=|a+=b|a+b的值存放到a中|a=a+b
+-=|a-=b|a0b的值存放到a中|a=a-b
+* = |a*=b|a* b的值存放到a中 |a=a* b
+/=|a/=b|a/b的值存放到a中|a=a/b
+%=|a%=b|a%b的值存放到a中|a=a%b
 <p id="p5"></p>
 
 ## :hearts:选择与循环语句

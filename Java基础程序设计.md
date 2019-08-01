@@ -244,6 +244,20 @@ public class Main {
 ## :hearts:选择与循环语句
 <a href="#title">:spades:回到目录</a><br>
 #### :copyright:程序的结构
-#### :copyright:选择结构
-#### :copyright:循环结构 
-#### :copyright:循环的中段
+3种程序结构: 顺序结构,选择结构,循环结构
+,语法同C语言
+
+---
+三目运算符: ?:   根据条件的成立与否,来决定结果为":"前还是后
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        int max=0;
+        int x=10;
+        int y=3;
+        max=x>y ? x:y;
+        System.out.println("max:"+max);
+    }
+}
+```

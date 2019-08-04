@@ -13,7 +13,7 @@
 <p id="title"></p>
 
 ## 目录
-<a href="#p1">:diamonds:</a><br>
+<a href="#p1">:diamonds:0</a><br>
 <p id="p1"></p>
 
 ## :hearts:

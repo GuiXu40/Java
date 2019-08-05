@@ -8,13 +8,14 @@
 :recycle:第五节:<a href="异常的捕获及处理.md">异常的捕获与处理</a><br>
 :recycle:第六节:<a href="包及访问权限控制.md">包及访问权限控制</a><br>
 :recycle:第七节:<a href="多线程.md">多线程</a><br>
+:recycle:第八节:<a href="泛型.md">泛型</a><br>
 
 -----------
 # -----------------Java基础程序设计-------------------------
 <p id="title"></p>
 
 ## 目录
-<a href="#p1">:diamonds:0</a><br>
+<a href="#p1">:diamonds:</a><br>
 <p id="p1"></p>
 
 ## :hearts:

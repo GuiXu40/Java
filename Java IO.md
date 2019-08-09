@@ -216,8 +216,51 @@ public class Main {
 
 ## :hearts:RandomAccessFile类
 <a href="#title">:spades:回到目录</a><br>
+RandomAccessFile类的常用方法
+
+方法|描述
+public RandomAccessFile(File file,String mode)throws FileNotFoundException|接收File类的对象,制定个操作路径没需要设置模式"r\w"
+public RandomAccessFile(String name,String mode)throws FileNotFoundException|直接输入一个固定对的文件路径
+public void close()throws IOException|关闭操作
+public int read(byte[] b)|将内容读取到byte数组中
+public final byte readByte()|读取一个字节
+public final int readInt()|从文件中读取整形数据
+public void seek(long pop)|设置读取指针的位置
+public final void writeByte()|将一个字符串写入文件中,按字节的方式处理
+public final void writeInt()|将一个int型的数据写入文件,长度为4位
+public int skipBytes(int n)|指针跳过多少个字节
+
+如果文件不存在,系统将自动进行创建
 #### :egg:写入数据
+为了保证可以进行随机读取,写入的名字必须是8个字节,写入的数字必须是4个字节
+```Java
+import java.io.File;
+import java.io.RandomAccessFile;
+public class Main {
+    public static void main(String[] args) throws Exception{  //直接抛出异常,程序中可以不再做出处理
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        RandomAccessFile rdf=null;   //声明一个类对象
+        rdf=new RandomAccessFile(f,"rw");
+        String name=null;
+        int age=0;
+        name="zhangshan";  ///字符串长度为8
+        age=30;    //数字长度为4
+        rdf.writeBytes(name);
+        rdf.writeInt(age);
+        name="guixu   ";
+        age=31;
+        rdf.writeBytes(name);
+        rdf.writeInt(age);
+        name="ysl     ";
+        age=32;
+        rdf.writeBytes(name);
+        rdf.writeInt(age);
+    }
+}
+```
 #### :egg:读取数据
+读取文件时直接使用"r"的模式即可
 <p id="p3"></p>
 
 ## :hearts:字节流

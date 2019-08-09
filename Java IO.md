@@ -49,8 +49,169 @@ public boolean renameTo(File dest)|为已有的文件重命名
 public long lastModified()|取得文件的最后一次修改日期的时间
 public File getParentFile()|取得当前路径的父路径
 #### :egg:使用File类操作文件
-+ 创建一个新文件
++ 创建一个新文件--createFile()必须使用try--catch进行异常处理
+```Java
+import java.io.File;
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        File f=new File("d:\\text.txt");  //必须给出完整路径
+        try{
+            f.createNewFile();      //根据指定的路径创建文件
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+观察Flie类中提供的两个常量
+```Java
+import java.io.File;
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("pathSeparator:"+File.pathSeparator);
+        System.out.println("separator:"+File.separator);
+    }
+}
+//pathSeparator:;
+//separator:\
+```
+对于创建文件的代码,最好的 做法是将以上使用的常量表示路径分隔符,修改如下
+```Java
+import java.io.File;
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        String path="d"+File.separator+"text.txt";
+        File f=new File(path);  //必须给出完整路径
+        try{
+            f.createNewFile();      //根据指定的路径创建文件
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
++ 删除一个文件--delete()
+在删除文件之前应该保证文件存在可以使用File的exists()方法(返回boolean类型)
+<br>
+将上面的三种方法结合起来:
+```Java
+import java.io.File;
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        String path="d"+File.separator+"text.txt";
+        File f=new File(path);  //必须给出完整路径
+        if(f.exists()){
+            f.delete();
+        }else{
+            try{
+                f.createNewFile();      //根据指定的路径创建文件
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+**文件拓展名可有可无**
++ 创建一个文件夹--mkdir()
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        String path="d"+File.separator+"mldn";
+        File f=new File(path);  //必须给出完整路径
+        if (f.getParentFile().exists()){   //父路径不存在
+            f.mkdir();                 //创建文件夹
+        }
+    }
+}
+```
+要先判断父目录是否存在
++ 列出指定目录的全部内容
+   + public String[] list(): 列出全部名称,返回一个字符串数组
+   + public File[] listFiles(): 列出完整的路径,返回一个File对象数组
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        File f=new File("d:"+File.separator);
+        String str[]=f.list();
+        for (int i=0;i<str.length;i++){
+            System.out.println(str[i]);
+        }
+    }
+}
+Sql 2014
+Sql_server_Database
+System Volume Information
+Temp
+text.txt
+```
+使用listFiles()方法列出目录的全部内容
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        File f=new File("d:"+File.separator);
+        File str[]=f.listFiles();
+        for (int i=0;i<str.length;i++){
+            System.out.println(str[i]);
+        }
+    }
+}
+d:\VMware
+d:\vs
+d:\Windows Kits
+d:\学习--Tools
+```
++ 判断一个给定的路径是否是目录
+```Java
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        File f=new File("d:"+File.separator);
+        if (f.isDirectory()){
+            System.out.println("是路径");
+        }else{
+            System.out.println("不是路径");
+        }
+    }
+}
+//是路径
+```
 #### :egg:范例--列出指定目录的全部内容
+```Java
+import java.io.File;
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) {
+	// write your code here
+        File f=new File("d:"+File.separator);
+        print(f);
+    }
+    public static void print(File file){
+        if(file !=null){
+            if(file.isDirectory()){
+                File f[]=file.listFiles();
+                if(f!=null){
+                    for (int i=0;i<f.length;i++){
+                        print(f[i]);
+                    }
+                }
+            }else{
+                System.out.println(file);
+            }
+        }
+    }
+}
+```
+上面的程序采用递归的调用形式,不断地判断传进来的路径是否是目录,如果是目录,则继续列出子文件夹,如果不是,则直接打印路径名称
 <p id="p2"></p>
 
 ## :hearts:RandomAccessFile类

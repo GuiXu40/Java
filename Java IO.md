@@ -24,7 +24,32 @@
 ## :hearts:操作文件的类--File
 <a href="#title">:spades:回到目录</a><br>
 #### :egg:FILE类的基本介绍
+File类的构造方法
+```Java
+public File(String pathname)-->实例化File类的时候,必须设置好路径
+```
+File类中主要方法和常量
+
+方法或常量|描述
+---|:--:
+public static final String pathSeparator|表示路径的分隔符
+public static final String separator|表示路径的分隔符
+public Flie(String pathname)|创建Flie类对象,传入完整路径
+public File(File parent,String child)|根据指定的父路径创建子文件
+public boolean createNewFile() throws IOException|创建新文件
+public boolean delete()|删除文件
+public boolean exists()|判断文件是否存在
+public boolean isDirectory()|判断给定的路径是否在一个目录
+public long length()|返回文件的大小
+public String[] list()| 列出指定目录的全部内容,只列出名称
+public File[] listFiles()|列出指定目录的全部内容,会列出路径
+public boolean mkdir()|创建一个目录
+public boolean mkdirs()|创建多级目录
+public boolean renameTo(File dest)|为已有的文件重命名
+public long lastModified()|取得文件的最后一次修改日期的时间
+public File getParentFile()|取得当前路径的父路径
 #### :egg:使用File类操作文件
++ 创建一个新文件
 #### :egg:范例--列出指定目录的全部内容
 <p id="p2"></p>
 

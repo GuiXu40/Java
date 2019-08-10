@@ -271,6 +271,179 @@ public class Main {
 + 进行读写操作
 + 关闭输入输出
 #### :egg:字节流
++ 字节输出流: OutputStream
+<br>
+此类的定义如下
+```Java
+public abstract class OutputStream extends Object implements Closeable,Flushable
+```
+是一个抽象类,如果要使用,必须通过子类实例化对象,OutputStream类中的主要方法
+
+方法或常量|描述
+---|:--:
+public void close()|关闭输出流
+public void flush()|刷新缓冲区
+public void write(byte[] b)|将一个byte数组写入数据流
+public void write(byte[] b,int off,int len)|将一个指定范围的byte数组写入数据流
+public abstract void write(int b)|将一个字节数据写入数据流
+
+可以使用FileOutputStream子类
+```Java
+public FileOutputStream(File file)
+```
+例:向文件中写入字符串
+```Java
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+	    //第一步:使用子类实例化父类对象
+            File f=new File("d:"+File.separator+"text.txt");
+	    //第二步: 通过子类实例化对象
+        OutputStream out=null;
+        out=new FileOutputStream(f);
+	
+        String str="hello,world";
+        byte b[]=str.getBytes();
+        out.write(b);
+        out.close();
+    }
+}
+```
+为了方便起见,直接在主方法上使用throws关键字抛出异常,可以减少try-catch语句
+文件不存在会自动创建,也可以把每个字节一个个写入文件中
+```Java
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        OutputStream out=null;
+        out=new FileOutputStream(f);
+        String str="hello,world";
+        byte b[]=str.getBytes();
+        for (int i=0;i<b.length;i++){
+            out.write(b[i]);
+        }
+        out.close();
+    }
+}
+``
++ 追加新内容:上面的代码如果重复执行,会覆盖文件中已有内容,如果想在后面增加内容,就可以使用另一个构造方法 
+```Java
+public FileOutputStream(Flie file,boolean append){}
+```
+如果append为true,表示在文件的末尾追加内容
+修改之前的代码
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        OutputStream out=null;
+        out=new FileOutputStream(f,true);  //此处表示在后面添加内容
+        String str="hello,world";
+        byte b[]=str.getBytes();
+        for (int i=0;i<b.length;i++){
+            out.write(b[i]);
+        }
+        out.close();
+    }
+}
+```
+**可以通过\r\n增加换行**
++ 字节输入流: InputStream从文件中把内容读取出来定义与OutputStream类似,主要方法:
+
+方法|描述
+---|:--:
+public int available()|取得输入文件的大小
+public void close()|关闭输入流
+public abstract int read()|读取内容,以数字的方式读取
+public int read(byte[] b)|将内容读到补byte数组中,同时返回读入的个数
+
+例:从文件中读取内容
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        InputStream inptut=new FileInputStream(f);
+        byte b[]=new byte[1024];
+        inptut.read(b);
+        inptut.close();
+        System.out.println(new String(b));   //吧byte数组变成为字符串输出
+    }
+}
+```
+上面代码的改进:
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        InputStream inptut=new FileInputStream(f);
+        byte b[]=new byte[1024];
+        int len=inptut.read(b);
+        inptut.close();
+        System.out.println(new String(b,0,len));   //吧byte数组变成为字符串输出
+    }
+}
+```
+上面的代码虽然指定了byte数组的范围,但是程序开辟了很多的无用空间,要根据文件的大小来指定byte数组的大小
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        InputStream inptut=new FileInputStream(f);
+        byte b[]=new byte[(int)f.length()];  //数组大小由文件大小决定
+        int len=inptut.read(b);
+        inptut.close();
+        System.out.println(new String(b,0,len));   //吧byte数组变成为字符串输出
+    }
+}
+```
+除以上的方法外,也可以通过循环,从文件中把一个个的内容读取出来,直接使用read即可
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        InputStream inptut=new FileInputStream(f);
+        byte b[]=new byte[(int)f.length()];
+        for (int i=0;i<b.length;i++){
+            b[i]=(byte) inptut.read();
+        }
+        inptut.close();
+        System.out.println(new String(b));   //吧byte数组变成为字符串输出
+    }
+}
+```
+上面的程序是在明确知道具体数组大小的前提下开展的,如果不知道输入内容的大小,只能通过判断是否读到文件末尾的方式来读取文件
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+            // write your code here
+            File f=new File("d:"+File.separator+"text.txt");
+        InputStream inptut=new FileInputStream(f);
+        int len=0;
+        byte b[]=new byte[1024];
+        int temp=0;
+        while ((temp=inptut.read())!=-1){
+            b[len]=(byte)temp;
+            len++;
+        }
+        inptut.close();
+        System.out.println(new String(b));   //吧byte数组变成为字符串输出
+    }
+}
+```
 #### :egg:字符流
 #### :egg:区别
 #### :egg:范例--文件复制

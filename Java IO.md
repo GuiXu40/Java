@@ -445,6 +445,91 @@ public class Main {
 }
 ```
 #### :egg:字符流
+一个字符等于两个字节,Java提供了Reader和Writer两个操作字符流的类<br>
++ 字符输出流Writer,如果是向文件中写入内容,应该使用FileWriter的子类,Writer类的常用方法:
+
+方法|描述
+---|:--:
+public abstract void close()|关闭输出流
+public void write(String str)|将字符串输出
+public void write(char[] cbuf)|将字符数组输出
+public abstract void flush() |强制性清空缓存
+
+FileWrite类的构造方法定义如下
+```Java
+public FileWrite(File file)
+```
+例:向文件中写数据
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Writer out=new FileWriter(f);  //通过对象多态性,进行实例化
+        String str="hello,world";
+        out.write(str);
+        out.close();  //关闭输出流
+    }
+}
+```
++ 使用FileWriter追加文件的内容,直接使用FileWriter类中的构造函数即可实现
+```Java
+public FileWrite(File file,boolean append)
+```
+例:追加文件内容
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Writer out=new FileWriter(f,true);  //通过对象多态性,进行实例化
+        String str="hello,world";
+        out.write(str);
+        out.close();  //关闭输出流
+    }
+}
+```
++ 字符输入流: Reader,从文件中读取文件,可以直接使用FileReader子类,Reader类的常用方法:
+
+方法|描述
+---|:--:
+public abstract void close()|关闭输出流
+public int read()|读取单个字符
+public int read(char[] cbuf)|将内容读到字符串数组中,返回读入的长度
+
+例:从文件中读取内容
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Reader reader=new FileReader(f);
+        char c[]=new char[1024];
+        int len=reader.read(c);
+        reader.close();
+        System.out.println("内容为:"+new String(c,0,len));
+    }
+}
+```
+如果不知道数据的长度,可以使用循环的方式进行读取
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Reader reader=new FileReader(f);
+        char c[]=new char[1024];
+        int len=0;
+        int temp=0;
+        while((temp=reader.read())!=-1){
+            c[len]=(char)temp;
+            len++;
+        }
+        reader.close();
+        System.out.println("内容为:"+new String(c,0,len));
+    }
+}
+```
 #### :egg:区别
 #### :egg:范例--文件复制
 <p id="p4"></p>

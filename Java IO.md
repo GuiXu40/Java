@@ -219,6 +219,7 @@ public class Main {
 RandomAccessFile类的常用方法
 
 方法|描述
+---|:--:
 public RandomAccessFile(File file,String mode)throws FileNotFoundException|接收File类的对象,制定个操作路径没需要设置模式"r\w"
 public RandomAccessFile(String name,String mode)throws FileNotFoundException|直接输入一个固定对的文件路径
 public void close()throws IOException|关闭操作

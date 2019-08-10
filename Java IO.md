@@ -538,6 +538,37 @@ public class Main {
 
 ## :hearts:转换流
 <a href="#title">:spades:回到目录</a><br>
++ OutputStreamWriter: 是Writer的子类,将输出的字符流变为字节流
++ InputStreamWriter: 是Reader的子类,将输入的字节流变为字符流
+<br>
+将字节输出流变为字符流输出
+```Java
+import java.io.*;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Writer out=new OutputStreamWriter(new FileOutputStream(f));
+        out.write("hello,world");
+        out.close();
+    }
+}
+```
+将字节流输入变为字符流输入流
+```Java
+import java.io.*;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File f=new File("d:"+File.separator+"text.txt");
+        Reader reader=new InputStreamReader(new FileInputStream(f));
+        char c[]=new char[1024];
+        int len=reader.read(c);
+        reader.close();
+        System.out.println(new String(c,0,len));
+    }
+}
+```
 <p id="p5"></p>
 
 ## :hearts:内存操作流

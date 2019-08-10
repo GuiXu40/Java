@@ -94,9 +94,10 @@ public class Main {
     }
 }
 ```
-+ 删除一个文件--delete()
++ 删除一个文件:delete()
 在删除文件之前应该保证文件存在可以使用File的exists()方法(返回boolean类型)
 <br>
+
 将上面的三种方法结合起来:
 ```Java
 import java.io.File;
@@ -119,7 +120,7 @@ public class Main {
 }
 ```
 **文件拓展名可有可无**
-+ 创建一个文件夹--mkdir()
++ 创建一个文件夹:mkdir()
 ```Java
 public class Main {
     public static void main(String[] args) {

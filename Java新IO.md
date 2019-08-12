@@ -259,7 +259,46 @@ public class Main {
 
 ## :hearts:文件锁FileLock类
 <a href="#title">:spades:回到目录</a><br>
-#### :egg:
+文件锁将文件锁定后,其他线程是无法操作此文件的,文件锁类FileLock是依靠FileChannel类进行实例化的;FileChannel类中提供的实例化FileLock对象的方法
+
+方法|描述
+---|:--:
+public final FileLock lock()|获得此通道的文件的独占锁定
+public abstract FileLock lock(long position,long size,boolean shared)|获得此通道文件指定区域的锁定,并指定锁定位置,锁定大小,是共享锁定(true)或独占锁定(false)
+public final FileLock tryLock|试图获取通道的独占锁定
+public final FileLock tryLock(long position,long size,boolean shared)|试图获得此通道文件指定区域的锁定,并指定锁定位置,锁定大小,是共享锁定(true)或独占锁定(false)
+
+文件锁定之后需要依靠FileLock类进行锁定,FileLock类的常用方法:
+
+方法|描述
+---|:--:
+public final boolean isShared()|判断是否为共享锁定
+public final FileChannel channel()|返回此锁定的FileChannel类
+public abstract void release()|解锁
+public final long size()|返回锁定区域的大小
+
+```Java
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File file=new File("d:"+File.separator+"text.txt");
+        FileOutputStream output=new FileOutputStream(file,true);
+        FileChannel fout=output.getChannel();
+        FileLock lock=fout.tryLock();
+        if(lock!=null){
+            System.out.println("锁定");
+            Thread.sleep(300000);
+            lock.release();
+            System.out.print("解锁");
+        }
+        fout.close();
+        output.close();
+    }
+}
+```
+上面的程序将文件锁定300秒
 <p id="p1"></p>
 
 ## :hearts:字符集Charset类

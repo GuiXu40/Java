@@ -154,8 +154,107 @@ public class Main {
 
 ## :hearts:通道
 <a href="#title">:spades:回到目录</a><br>
+通道(Channel:本身是一个接口)可以用来读取和写入数据,类似于之前的输入输出流,但是程序不会直接操作通道,所有的内容都是先读或写入到缓冲区内,在通过缓冲区取得或写入<br>
+
+方法|描述
+---|:--:
+void close()|关闭通道
+boolean isOpen()|判断此通道是否是打开的
 #### :egg:FileChannel类
+是Channel的子类,可以进行文件的读/写操作
+
+方法|描述
+---|:--:
+public int read(ByteBuffer dst)|将内容读入到缓冲区中
+public int write(ByteBuffer src)|将内容从缓冲区中写入到通道
+public final void close()|关闭通道
+public abstract MappedByteBuffer map(FileChannel.MapMode mode ,long position ,long size)|将通道的文件区域映射到内存中,同时指定映射模式,文件中的映射文件以及要映射的区域大小
+
+例:使用输出通道输出内容
+```Java
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.channels.FileChannel;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        String info[]={"guixu","ysl","www","nice"};
+        File file=new File("d:"+File.separator+"out.txt");
+        FileOutputStream output=new FileOutputStream(file);   //实例化输出流
+        FileChannel fout=output.getChannel();  //得到输出的文件通道
+        ByteBuffer buf=ByteBuffer.allocate(1024);  //开辟缓存
+        for (int i=0;i<info.length;i++){
+            buf.put(info[i].getBytes());
+        }
+        buf.flip();  //重设缓冲区,开始输出
+        fout.write(buf);
+        fout.close();   //关闭输出通道
+        output.close();  //关闭输出流
+    }
+}
+```
+FileChannel类是双向操作的,可以同时完成输出和输入数据的功能
+```Java
+import java.io.*;
+import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.channels.FileChannel;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File file1=new File("d:"+File.separator+"note.txt");
+        File file2=new File("d:"+File.separator+"outnote.txt");
+        FileInputStream input=new FileInputStream(file1);
+        FileOutputStream output=new FileOutputStream(file2);
+        FileChannel fin=input.getChannel();
+        FileChannel fout=output.getChannel();
+        ByteBuffer buf=ByteBuffer.allocate(1024);
+        int temp=0;
+        while((temp=fin.read(buf))!=-1){
+            buf.flip();
+            fout.write(buf);
+            buf.clear();
+        }
+        fin.close();
+        fout.close();
+        input.close();
+        output.close();
+    }
+}
+```
 #### :egg:内存映射
+内存映射可以把文件映射到内存中,这种方式读取文件最快,要使用FileChannel类提供的map()方法
+```Java
+public abstract MappedByteBuffer map(FileChannel.MapMode mode ,long position ,long size)
+```
+```Java
+import java.io.*;
+import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+public class Main {
+    public static void main(String[] args) throws Exception{
+        // write your code here
+        File file=new File("d:"+File.separator+"text.txt");
+        FileInputStream input=new FileInputStream(file);
+        FileChannel fin=input.getChannel();
+        MappedByteBuffer mbb=fin.map(FileChannel.MapMode.READ_ONLY,0,file.length());  //声明文件的内存映射
+        byte data[]=new byte[(int)file.length()];
+        int foot=0;
+        while (mbb.hasRemaining()){
+            data[foot++]=mbb.get();
+        }
+        System.out.println(new String(data));
+        fin.close();
+        input.close();
+    }
+}
+```
+不使用此方法写入数据
 <p id="p1"></p>
 
 ## :hearts:文件锁FileLock类

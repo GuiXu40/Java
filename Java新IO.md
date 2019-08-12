@@ -303,8 +303,20 @@ public class Main {
 
 ## :hearts:字符集Charset类
 <a href="#title">:spades:回到目录</a><br>
-#### :egg:<p id="p1"></p>
+Charset类用于负责处理编码,Charset类的常用方法
+
+方法|描述
+---|:--:
+public static SortedMap<String,Charset>avaliableCharsets()|取得Charset的全部字符集
+public static Charset forName()|返回指定编码方式的Charset对象
+public abstract CharsetEncoder newEncoder()|创建编码器
+public abstract CharsetDecoder new Decoder()|创建解码器
+
+```Java
+public final ByteBuffer encode(CharBuffer in)   //将单个输入字符进行编码
+public final CharBuffer decode(ByteBuffer in)   //将编码后的内容进行解码
+```
+<p id="p1"></p>
 
 ## :hearts:Selector类
 <a href="#title">:spades:回到目录</a><br>
-#### :egg:

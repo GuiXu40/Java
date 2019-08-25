@@ -108,6 +108,73 @@ public class Main {
 ## :hearts:TCP程序设计
 <a href="#title">:spades:回到目录</a><br>
 #### :egg:ServerSocket类与Socket类
+**使用socket类可以方便的建立可靠的,双向的,持续的,点对点的通信连接**<br>
+ServerSocket类主要用于服务器端程序的开发,用于接收客户端的请求,常用方法如下:
+
+方法|描述
+---|:--:
+public ServerSocket(int port)|创建ServerSocket实例,并指定监听端口
+public Scoket accept()|等待客户端连接,此方法连接前一直阻塞
+public InetAddress getInetAddress()|返回服务器的IP地址
+public boolean isClose()|放回ServerSocket的关闭状态
+public void close()|关闭ServerSocket
+
+在服务器端每次运行时都要使用accept()方法等待客户端连接,每一个socket都表示一个客户端对象,方法 如下:
+
+方法|描述
+---|:--:
+public Socket(String host,int port)|构造Socket对象,同时指定要连接服务器的主机名称及连接端口
+public InputStream getInputStream()|放回此套接字的输入流
+public OutputStream getOutputStream()|放回此套接字的输出流
+public void close()|关闭此Socket
+public boolean isClose()|判断此套接字是否被关闭
+
+#### :egg:第一个TCP程序
+建立服务器程序
+```Java
+package com.company;
+
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.*;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) throws Exception{  //所有异常抛出
+	// write your code here
+        ServerSocket server=null;  //声明ServerSocket对象
+        Socket client=null;  //一个Socket对象表示一个客户端
+        PrintStream out=null;  //声明打印输出流,以向客户端输出
+        server=new ServerSocket(8888);  //此时服务器再8888端口上等待客户端的访问
+	
+        client=server.accept();   //程序在此阻塞,等待客户端连接
+        String str="hello world";  //要向客户端输出的信息
+        out=new PrintStream(client.getOutputStream());  //实例化打印流对象,输出对象
+        out.print(str);  //输出信息
+        out.close();    //关闭输出流
+        client.close();  //关闭客户端连接
+        server.close();  //关闭服务器连接
+    }
+}
+```
+编写客户端程序
+```Java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        ServerSocket server=null;
+        Socket client=null;
+        PrintStream out=null;
+        server=new ServerSocket(8888);
+        System.out.println("begin");
+        client=server.accept();
+        String str="hello world";
+        out=new PrintStream(client.getOutputStream());
+        out.print(str);
+        out.close();
+        client.close();
+        server.close();
+    }
+}
+```
 #### :egg:案例
 #### :egg:在服务器上应用多线程
 <p id="p5"></p>

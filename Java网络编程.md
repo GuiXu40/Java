@@ -78,6 +78,7 @@ public class Main {
 }
 ```
 #### :egg:URLConnection类
+URLConnection是**封装访问远程网络资源的一般方法的类**-->通过他可以建立与远程服务器的连接
 <p id="p3"></p>
 
 ## :hearts:URLEncoder类与URLDecoder类

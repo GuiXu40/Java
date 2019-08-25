@@ -49,6 +49,34 @@ public class Main {
 ## :hearts:URL与URLConnection类
 <a href="#title">:spades:回到目录</a><br>
 #### :egg:URL
+URL(uniform Rescource Locator)统一资源定位符,URL类的常用方法:
+
+方法|描述
+---|:--:
+public URL(String spec)|根据指定的地址实例化URL对象
+public URL(String Protocol,String host,int port,String file)|实例化URL对象,并指定协议,主机,端口号,资源文件
+public URLConnection openConnection()|取得一个URLConnecection对象
+public final InputStream()|取得输入流
+
+例:使用 URL 读取内容
+```Java
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) throws Exception{  //所有异常抛出
+	// write your code here
+        URL url=new URL("https","www.github.com",80,"/GuiXu40"); //指定操作的URL
+        InputStream input=url.openStream();   //打开输入流,读取URL内容
+        Scanner scan=new Scanner(input);    //实例化Scanner对象
+        scan.useDelimiter("\n");         //设置读取分隔符
+        while (scan.hasNext()){        //输出内容
+            System.out.print(scan.next());
+        }
+    }
+}
+```
 #### :egg:URLConnection类
 <p id="p3"></p>
 

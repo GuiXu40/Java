@@ -76,6 +76,8 @@ public class Main {
         }
     }
 }
+//内容大小:-1
+//内容类型:text/html; charset=utf-8
 ```
 #### :egg:URLConnection类
 URLConnection是**封装访问远程网络资源的一般方法的类**-->通过他可以建立与远程服务器的连接
@@ -83,6 +85,24 @@ URLConnection是**封装访问远程网络资源的一般方法的类**-->通过
 
 ## :hearts:URLEncoder类与URLDecoder类
 <a href="#title">:spades:回到目录</a><br>
+在URL中,中文会被进行**编码操作**,,在Java中如果想要完成编码和解码的操作就必须使用URLEncode(对传递的内容进行编码),URLDecode(对内容进行解码)
+<br>
+例:编码及解码操作
+```Java
+import java.net.*;
+public class Main {
+    public static void main(String[] args) throws Exception{  //所有异常抛出
+	// write your code here
+        String keyword="guixu 桂旭";
+        String encode= URLEncoder.encode(keyword,"UTF-8");
+        System.out.println("编码之后的内容:"+encode);
+        String decode= URLDecoder.decode(encode,"UTF-8");
+        System.out.println("解码之后的内容:"+decode);
+    }
+}
+//编码之后的内容:guixu+%E6%A1%82%E6%97%AD
+//解码之后的内容:guixu 桂旭
+```
 <p id="p4"></p>
 
 ## :hearts:TCP程序设计

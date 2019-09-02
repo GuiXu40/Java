@@ -433,6 +433,130 @@ Blob getBlob(int i)|根据列的编号,返回Blob数据
 Blob getBlob(String colName)|根据列名称,返回blob的数据
 
 #### :egg:处理CLOB数据
+表示大文本文件,在mysql中提供了**LONGTEXT**类型表示大文本数据,最大数据量为4g
+```mysql
+CREATE TABLE clob(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHER(30) NOT NULL,
+    note LONGTEXT
+)
+```
+写入大文本数据
+```Java
+package com.company;//导入包
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.*;
+/*
+ * 数据库连接
+ */
+public class Main {
+    //jdbc驱动
+    public static final String driver="com.mysql.cj.jdbc.Driver";
+    //这里我的数据库是text
+    public static final String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+    public static final String user="root";
+    public static final String password="root";
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        PreparedStatement pstmt = null;  //数据库操作
+        //操作语句SQL
+        String name="桂旭";
+        String sql="INSERT INTO clob (name,note) VALUES(?,?)";
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            pstmt=con.prepareStatement(sql);  //实例化preparedStatement对象
+            //声明一个FILE对象,用于找到要操作的大文本文件
+            File f=new File("d:"+File.separator+"text.txt");
+            InputStream input=null;  //通过输入流读取文件内容
+            input=new FileInputStream(f);
+            pstmt.setString(1,name);
+            pstmt.setAsciiStream(2,input,(int)f.length());
+            pstmt.executeUpdate();
+            pstmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+读取大文本文件
+```Java
+package com.company;//导入包
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.Scanner;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    //jdbc驱动
+    public static final String driver="com.mysql.cj.jdbc.Driver";
+    //这里我的数据库是text
+    public static final String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+    public static final String user="root";
+    public static final String password="root";
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        PreparedStatement pstmt = null;  //数据库操作
+        ResultSet rs=null;
+        //操作语句SQL
+        int id=1;
+        String sql="SELECT name,note from clob where id=?";
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            pstmt=con.prepareStatement(sql);  //实例化preparedStatement对象
+            pstmt.setInt(1,id);
+            rs=pstmt.executeQuery();
+            if(rs.next()){
+                String name=rs.getString(1);
+                StringBuffer note=new StringBuffer();
+                System.out.println("name:"+name);
+                InputStream input=rs.getAsciiStream(2);
+                Scanner scan=new Scanner(input);
+                scan.useDelimiter("\r\n");
+                while (scan.hasNext()){
+                    note.append(scan.next()).append("\n");
+                }
+                System.out.println("内容:"+note);
+            }
+            pstmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
 #### :egg:处理BLOB数据
 <p id="p7"></p>
 

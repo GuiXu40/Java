@@ -338,11 +338,100 @@ public class Main {
 ## :hearts:PrepareStatement接口
 <a href="#title">:spades:回到目录</a><br>
 #### :egg:简介
+是Statement的子接口,属于**预处理操作**,在PrepareStatement中的SQL语句中,具体的内容是采用占位符形式的
+
+方法|描述
+---|:--:
+int executeUpdate()|执行设置的预处理操作
+void setInt(int parameterIndex,int x)|指定要设置的索引编号,并设置整数内容
+void setString(int parameterIndex,int x)|指定要设置的索引编号,并设置字符串内容
+void setFloat(int parameterIndex,int x)|指定要设置的索引编号,并设置浮点数内容
+void setDate(int parameterIndex,int x)|指定要设置的索引编号,并设置Java.sql.Date类型内容
+
+**注意**: setDate()方法使用的是java.sql.Date类型,而不是java.util.Date,所以要将一个java.util.Date类型的内容变为java.sql.Date
+```java
+String birthday="2019-9-2";
+java.util.Date.temp=null;  //声明一个date对象
+//通过SimpleDateFormat类将一个字符串变为java.util.Date类型
+temp=SimpleDateFormat("yyyy-MM-dd").parse(birthday);
+java.sql.Date bir=new java.util.Date(temp.getTime());
+```
 #### :egg:使用
+完成数据插入操作
+```Java
+package com.company;//导入包
+import java.sql.*;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    //jdbc驱动
+    public static final String driver="com.mysql.cj.jdbc.Driver";
+    //这里我的数据库是text
+    public static final String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+    public static final String user="root";
+    public static final String password="root";
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        PreparedStatement pstmt = null;  //数据库操作
+        //操作语句SQL
+        String name="google";
+        String url1="www.google.com";
+        int alexa=45;
+        String country="American";
+        String sql= "INSERT INTO websites(name,url,alexa,country)"+"VALUES(?,?,?,?)";  //编写预处理SQL
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            pstmt=con.prepareStatement(sql);  //实例化preparedStatement对象
+            pstmt.setString(1,name);
+            pstmt.setString(2,url1);
+            pstmt.setInt(3,alexa);
+            pstmt.setString(4,country);
+            pstmt.executeUpdate();
+            pstmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
+
 <p id="p6"></p>
 
 ## :hearts:处理大数据对象
 <a href="#title">:spades:回到目录</a><br>
+在CLOB中储存大量文字,在BLOG中可以储存二进制文件,如图片,电影等<br>
+PrepareStatement提供了如下表的方法,专门用于写入大数据对象
+
+方法|描述
+---|:--:
+void setAsciiStream(int parameterIndex,InputStream,int length)|将指定的输入流写入数据库的文本字段
+void setBinaryStream(int parameterIndex,InputStream x,int length)|将二进制的输入流数据写入二进制字段中
+
+ResultSet中提供了方法用于读出大对象数据
+
+方法|描
+---|:--:
+InputStream getAsciiStream(int columnIndex)|根据列的编号返回大对象的文本输入流
+InputStream getAsciiStream(String columnName)|根据列的名称返回大对象的文本输入流
+Clob getClob(String colName)|根据列名称返回Clob数据
+InputStream getBinaryStream(int columnIndex)|根据列的编号,返回二进制数据
+InputStream getBinaryStream(String columnName)|根据列的名称,返回二进制数据
+Blob getBlob(int i)|根据列的编号,返回Blob数据
+Blob getBlob(String colName)|根据列名称,返回blob的数据
+
 #### :egg:处理CLOB数据
 #### :egg:处理BLOB数据
 <p id="p7"></p>

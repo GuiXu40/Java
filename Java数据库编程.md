@@ -26,15 +26,232 @@
 ## :hearts:连接数据库
 <a href="#title">:spades:回到目录</a><br>
 #### :egg:配置mysql数据库的驱动
-#### :egg:加载驱动程序
+**注意**:在下载mysql的时候,最好下载那些网络中有教程的,比较好纠错<br>
+第一步,需要将mysql的驱动包放在**你的安装目录\jre\lib\ext**文件夹下
 #### :egg:连接及关闭数据库
+通过DriverManager类连接数据库
+
+方法|描述
+---|:--:
+public static Connection getConnection(String url)|通过连接地址连接数据库
+public static Connection getConnection(String url,String user,String password)|同时输入用户名和密码
+
+连接地址格式
+```Java
+jdbc:mysql://IP 地址:端口号/数据库名称
+```
+连接数据库
+```Java
+package com.company;//导入包
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    public static void main(String[] args) {
+        Connection con;
+        //jdbc驱动
+        String driver="com.mysql.cj.jdbc.Driver";
+        //这里我的数据库是text
+        String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+        String user="root";   //用户名
+        String password="root";   //密码
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+
+            con.close();   //必须要
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
+**数据库打开之后必须关闭**
 <p id="p3"></p>
 
 ## :hearts:数据库的更新操作
 <a href="#title">:spades:回到目录</a><br>
+Statement接口的常用方法
+
+方法|描述
+---|:--:
+int executeUpdate(String sql)|执行数据库的增,删,改
+ResultSet executeQuery(String sql)|执行数据库查询操作,返回一个结果集对象
+void addBatch(String sql)|增加一个待执行的SQL语句f
+int[] executeBatch()|批量执行SQL语句
+void close()|关闭Statement操作(必须要)
+boolean execute(String sql)|执行SQL语句
 #### :egg:插入
+```Java
+package com.company;//导入包
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        Statement stmt = null;  //数据库操作
+        //jdbc驱动
+        String driver="com.mysql.cj.jdbc.Driver";
+        //这里我的数据库是text
+        String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+        String user="root";
+        String password="root";
+
+        //操作语句SQL
+        String name="百度";
+        String url1="www.baidu.com";
+        int alexa=18;
+        String country="成都";
+        String sql="INSERT INTO websites(name,url,alexa,country)"+"VALUES('"+name+"','"+url1+"',"+alexa+",'"+country+"')";
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            stmt=con.createStatement();  //实例化statement对象
+            stmt.executeUpdate(sql);
+            stmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
+**在jdbc中一般按照顺序关闭**
 #### :egg:修改
-#### :egg:操作
+```Java
+package com.company;//导入包
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        Statement stmt = null;  //数据库操作
+        //jdbc驱动
+        String driver="com.mysql.cj.jdbc.Driver";
+        //这里我的数据库是text
+        String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+        String user="root";
+        String password="root";
+
+        //操作语句SQL
+        int id=1;
+        String name="百度";
+        String url1="www.baidu.com";
+        int alexa=18;
+        String country="成都";
+        String sql="UPDATE websites SET name='"+name+"',url='"+url1+"',alexa="+alexa+",country='"+country+"'Where id="+id;
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            stmt=con.createStatement();  //实例化statement对象
+            stmt.executeUpdate(sql);
+            stmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
+#### :egg:删除
+```Java
+package com.company;//导入包
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        Statement stmt = null;  //数据库操作
+        //jdbc驱动
+        String driver="com.mysql.cj.jdbc.Driver";
+        //这里我的数据库是text
+        String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+        String user="root";
+        String password="root";
+
+        //操作语句SQL
+        int id=1;
+//        String name="百度";
+//        String url1="www.baidu.com";
+//        int alexa=18;
+//        String country="成都";
+        String sql="DELETE FROM websites WHERE id="+id;
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            stmt=con.createStatement();  //实例化statement对象
+            stmt.executeUpdate(sql);
+            stmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
 <p id="p4"></p>
 
 ## :hearts:ResultSet接口

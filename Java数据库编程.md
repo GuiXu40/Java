@@ -256,6 +256,83 @@ public class Main {
 
 ## :hearts:ResultSet接口
 <a href="#title">:spades:回到目录</a><br>
+查询记录将使用ResultSet进行接收,并使用ResultSet取得内容,实际上是保存在内存中,所以查询出来的数据总量过大,则系统将报错
+
+方法|描述
+---|:--:
+boolean next() |将指针移到下一行
+int getInt(int columnIndex)|取得整形数据
+int getString(String columnIndex)|取得字符串数据
+int getFloat(int columnIndex)|以float类型储存数据
+int getString(int columnIndex)|以String类型储存数据
+Date getDate(int ..)|以date类型储存
+从表中查询数据
+```Java
+package com.company;//导入包
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * 数据库连接
+ */
+public class Main {
+    public static void main(String[] args) {
+        Connection con;   //数据库连接
+        Statement stmt = null;  //数据库操作
+        ResultSet rs=null;  // 保存查询结果
+        //jdbc驱动
+        String driver="com.mysql.cj.jdbc.Driver";
+        //这里我的数据库是text
+        String url="jdbc:mysql://localhost:3306/text?&useSSL=false&serverTimezone=UTC";
+        String user="root";
+        String password="root";
+
+        //操作语句SQL
+
+        String sql="SELECT id,name,url,alexa,country FROM websites";
+        try {
+            //注册JDBC驱动程序
+            Class.forName(driver);
+            //建立连接
+            con = DriverManager.getConnection(url, user, password);
+            if (!con.isClosed()) {
+                System.out.println("数据库连接成功");
+            }
+            stmt=con.createStatement();  //实例化statement对象
+            rs=stmt.executeQuery(sql);
+            while (rs.next()){
+                int id=rs.getInt("id");  //取得ID内容
+                String url1=rs.getString("url");
+                int alexa=rs.getInt("alexa");
+                String country=rs.getString("country");
+                System.out.println("id:"+id+",url:"+url1+",alexa:"+alexa+",country"+country);
+            }
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("数据库驱动没有安装");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("数据库连接失败");
+        }
+    }
+}
+```
+也可以按照值的顺序采用编号
+```Java
+            while (rs.next()){
+                int id=rs.getInt(1);  //取得ID内容
+                String url1=rs.getString(2);
+                int alexa=rs.getInt(3);
+                String country=rs.getString(4);
+                System.out.println("id:"+id+",url:"+url1+",alexa:"+alexa+",country"+country);
+            }
+```
 <p id="p5"></p>
 
 ## :hearts:PrepareStatement接口

@@ -15,7 +15,7 @@
 #### :egg:Buffer的基本操作
 
 缓冲区类型|描述
----|--:
+---|:--:
 ByteBuffer|字节
 CharBuffer|字符
 ShortBuffer|短整型
@@ -27,6 +27,7 @@ DoubleBuffer|双精度浮点型
 Buffer类的常用方法
 
 方法|描述
+---|:--:
 public final int capacity)()|返回缓冲区的容量
 public final int limit()|返回缓冲区的限制
 public final Buffer limit(int limit)|设置缓冲区的限制
